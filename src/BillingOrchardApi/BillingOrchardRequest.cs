@@ -7,19 +7,20 @@ namespace BillingOrchardApi
 {
     public class BillingOrchardRequest
     {
-        internal string _key { get; }
-        internal string _service { get; }
+        private const string _apiUrl = "https://billingorchardapi.com/webservice/ChooseService.php";
+        internal string Key { get; }
+        internal string Service { get; }
         internal const string _hmacKey = "BillingOrchard2012";
 
         public BillingOrchardRequest(string key, string service)
         {
-            _key = key;
-            _service = service;
+            Key = key;
+            Service = service;
         }
 
         internal string GenerateHmac()
         {
-            string signature = _key + _service + DateTime.UtcNow.ToString("yyyyMMdd HH:mm");
+            string signature = Key + Service + DateTime.UtcNow.ToString("yyyyMMdd HH:mm");
             var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_hmacKey));
             return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(signature)));
         }
